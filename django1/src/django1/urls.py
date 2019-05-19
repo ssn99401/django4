@@ -37,7 +37,8 @@ urlpatterns = [
     #app_name 설명이 있었는데 모르겠다...
     #-> include함수의 namespace 매개변수에 원하는 그룸명 지정
     #path('social/', include('social_django.urls',namespace='social')),
-    path('blog/', include('blog.urls'))
+    path('blog/', include('blog.urls')),
+    path('', include('cal.urls')),
 ]
 #사용자가 이미지, 첨부파일 요청 URL을 사용하면, 서버의 하드디스크에 파일을 HTTP로 넘겨줄수 있도록 등록하는 작업
 from django.conf import settings

@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     #소셜로그인 : 다른 사이트에 회원정보를 우리 웹서버에 가져오는 방식
     #'social_django'
     'blog',
+    'cal.apps.CalConfig',
 ]
 
 MIDDLEWARE = [
