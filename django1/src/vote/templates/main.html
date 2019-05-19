@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 <a href="{% url 'blog:index' %}">게시판</a>
-<p>캘린더 자리</p>
+<a href="{% url 'cal:calendar' %}">캘린더</a>
+<a href="/vote">투표</a>
 {% endblock %}
