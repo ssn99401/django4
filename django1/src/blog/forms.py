@@ -22,3 +22,4 @@ class PostingForm(forms.ModelForm):
         fields = ['c', 'title', 'content']
         #exclude = ['u', 'pub_date']
         
+        

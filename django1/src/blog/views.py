@@ -127,8 +127,6 @@ class PostSearch(ListView):
 
 
 
-
-
 '''
 쿼리셋이란?? 특정 조건을 만족하는 객체를 가져오기 위한 것, sql의 select문에 해당 적절한 퀴리셋으로 얻고자 하는 데이터를 추출해야함
 objects.get() 같은 것을 가져올 때 

@@ -33,7 +33,7 @@ SECRET_KEY = '^7ukjwq%lj^3-m-8ey^m_ei0lhbw7rv46k_12lcem8nei8zw=q'
 DEBUG = True 
 
 #127.0.0.1 대신 사용할 외부 도메인 주소를 저장하는 변수
-ALLOWED_HOSTS = ['.pythonanywhere.com']
+#ALLOWED_HOSTS = ['.pythonanywhere.com']
 '''
 reverse와 reverse_lazy 공통점
 등록된 URL의 별칭을 바탕으로 URL 문자열을 반환하는 함수
@@ -43,17 +43,17 @@ reverse_lazy : 서버가 정상적으로 실행된 뒤에 URL을 찾음
 setting.py는 웹서버 실행에 필요한 변수값을 읽는 단계이므로, reverse_lazy함수를 사용해야함
 헷갈린다 -> 무조건 reverse_lazy함수 사용
 '''
-LOGIN_URL = reverse_lazy('cl:signin')
+#LOGIN_URL = reverse_lazy('cl:signin')
 #소셜로그인을 마친후 이동할 페이지 주소
-LOGIN_REDIRECT_URL = '/vote/' #reverse_lazy('vote:index')
+#LOGIN_REDIRECT_URL = '/vote/' #reverse_lazy('vote:index')
 
 #social_django 어플리케이션으로  Google-plus 로그인에 사용되는 ID와 보안비밀을 저장하는 변수
-SOCIAL_AUTH_GOOGLE_PLUS_SECRET ='DY8i4WF9zf4TMqns2ilAe8YQ'
-SOCIAL_AUTH_GOOGLE_PLUS_KEY ='713391285577-ind90ksag6pt0m81ndt68db9cg8roai9.apps.googleusercontent.com' 
+#SOCIAL_AUTH_GOOGLE_PLUS_SECRET ='DY8i4WF9zf4TMqns2ilAe8YQ'
+#SOCIAL_AUTH_GOOGLE_PLUS_KEY ='713391285577-ind90ksag6pt0m81ndt68db9cg8roai9.apps.googleusercontent.com' 
 
 #로그인처리에 사용되는 클래스를 등록하는 변수
 #-> 소셜로그인과 장고의 Auth 어플리케이션의 User 모델클래스를 연동하기 위함
-AUTHENTICATION_BACKENDS = (
+'''AUTHENTICATION_BACKENDS = (
     #구글로그인 사용하기 위한 클래스
     'social_core.backends.open_id.OpenIdAuth',
     'social_core.backends.google.GoogleOpenId',
@@ -63,6 +63,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     
     )
+'''
 # Application definition
 
 INSTALLED_APPS = [
@@ -72,14 +73,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bookmark',
     'vote',
     'customlogin',
     #social-auth-app-django를 설치했을 때 사용할 수 있는 어플리케이션
     #social_django : 소셜로그인 기능을 다루는 어플리케이션
     #소셜로그인 : 다른 사이트에 회원정보를 우리 웹서버에 가져오는 방식
-    'social_django',
-    'blog'
+    #'social_django'
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -105,8 +105,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
             ],
         },
     },

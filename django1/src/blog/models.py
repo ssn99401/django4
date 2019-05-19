@@ -44,5 +44,3 @@ class PostImage(models.Model):
 
 
 
-
-
