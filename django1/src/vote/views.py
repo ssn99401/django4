@@ -16,8 +16,42 @@ def main(request):
 def index(request):
     #데이터베이스에 저장된 Question 객체 리스트로 추출
     a = Question.objects.all()
+    #날씨정보 전달
+    api_date, api_time = get_api_date()
+    url = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData?"
+    key = "serviceKey=" + "DQdkxZWqaYrA0zeZ0s3qc93jqj3ubKvUE3Q7hrBQVa8mhXiTgknQTNW%2FPZ2IZxvUuDZy%2FdVeNvIRgkIz%2FgEjiA%3D%3D"
+    date = "&base_date=" + api_date
+    time = "&base_time=" + api_time
+    nx = "&nx=97"
+    ny = "&ny=76"
+    numOfRows = "&numOfRows=100"
+    type = "&_type=json"
+    api_url = url + key + date + time + nx + ny + numOfRows + type
+
+    data = urllib.request.urlopen(api_url).read().decode('utf8')
+    data_json = json.loads(data,encoding='utf8')
+
+    parsed_json = data_json['response']['body']['items']['item']
+
+    target_date = parsed_json[0]['fcstDate']  # get date and time
+    target_time = parsed_json[0]['fcstTime']
+
+    date_calibrate = target_date  # date of TMX, TMN
+    if target_time > 1300:
+        date_calibrate = str(int(target_date) + 1)
+
+    passing_data = {}
+    for one_parsed in parsed_json:
+        if one_parsed['fcstDate'] == target_date and one_parsed['fcstTime'] == target_time:  # get today's data
+            passing_data[one_parsed['category']] = one_parsed['fcstValue']
+
+        if one_parsed['fcstDate'] == date_calibrate and (
+                one_parsed['category'] == 'TMX' or one_parsed['category'] == 'TMN'):  # TMX, TMN at calibrated day
+            passing_data[one_parsed['category']] = one_parsed['fcstValue']
+    rain = passing_data['PTY']
+
     #index.html 전달
-    return render(request, 'vote/index.html',{'a': a})
+    return render(request, 'vote/index.html',{'rain':rain,'a':a})
 #설문조사 페이지
 def detail(request,q_id):
     #Question객체들 중 q_id와 동일한 값을 id변수에 가진 객체 추출
@@ -84,7 +118,7 @@ def result(request, q_id):
     return render(request, 'vote/result.html',{'q': q })
 #모델 폼 클래스 임포트
 from vote.forms import QuestionForm, ChoiceForm
-from _datetime import datetime
+from datetime import datetime
 #Question 객체 추가
 @login_required
 def qregiste(request):
@@ -199,7 +233,64 @@ def cdelete(request, c_id):
     #HTML 파일 or URL 주소 전달
     return render(request,'vote/delete_com.html',{'title': c.name,'type': 2})
     
-    
+import datetime
+import pytz
+import urllib.request
+import json
+
+def get_api_date():
+    standard_time = [2, 5, 8, 11, 14, 17, 20, 23]
+    time_now = datetime.datetime.now(tz=pytz.timezone('Asia/Seoul')).strftime('%H')
+    check_time = int(time_now) - 1
+    day_calibrate = 0
+    while not check_time in standard_time:
+        check_time -= 1
+        if check_time < 2:
+            day_calibrate = 1
+            check_time = 23
+
+    date_now = datetime.datetime.now(tz=pytz.timezone('Asia/Seoul')).strftime('%Y%m%d')
+    check_date = int(date_now) - day_calibrate
+    if (check_time < 10):
+        return (str(check_date), ('0' + str(check_time) + '00'))
+    else:
+        return (str(check_date), (str(check_time) + '00'))
+
+
+def get_weather_data():
+    api_date, api_time = get_api_date()
+    url = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData?"
+    key = "serviceKey=" + "DQdkxZWqaYrA0zeZ0s3qc93jqj3ubKvUE3Q7hrBQVa8mhXiTgknQTNW%2FPZ2IZxvUuDZy%2FdVeNvIRgkIz%2FgEjiA%3D%3D"
+    date = "&base_date=" + api_date
+    time = "&base_time=" + api_time
+    nx = "&nx=97"
+    ny = "&ny=76"
+    numOfRows = "&numOfRows=100"
+    type = "&_type=json"
+    api_url = url + key + date + time + nx + ny + numOfRows + type
+
+    data = urllib.request.urlopen(api_url).read().decode('utf8')
+    data_json = json.loads(data)
+
+    parsed_json = data_json['response']['body']['items']['item']
+
+    target_date = parsed_json[0]['fcstDate']  # get date and time
+    target_time = parsed_json[0]['fcstTime']
+
+    date_calibrate = target_date  # date of TMX, TMN
+    if target_time > 1300:
+        date_calibrate = str(int(target_date) + 1)
+
+    passing_data = {}
+    for one_parsed in parsed_json:
+        if one_parsed['fcstDate'] == target_date and one_parsed['fcstTime'] == target_time:  # get today's data
+            passing_data[one_parsed['category']] = one_parsed['fcstValue']
+
+        if one_parsed['fcstDate'] == date_calibrate and (
+                one_parsed['category'] == 'TMX' or one_parsed['category'] == 'TMN'):  # TMX, TMN at calibrated day
+            passing_data[one_parsed['category']] = one_parsed['fcstValue']
+
+    #render(request,'vote/index.html',passing_data)
     
 
 
