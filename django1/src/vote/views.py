@@ -52,6 +52,8 @@ def index(request):
 
     #index.html 전달
     return render(request, 'vote/index.html',{'rain':rain,'a':a})
+
+
 #설문조사 페이지
 def detail(request,q_id):
     #Question객체들 중 q_id와 동일한 값을 id변수에 가진 객체 추출
@@ -256,7 +258,7 @@ def get_api_date():
     else:
         return (str(check_date), (str(check_time) + '00'))
 
-
+'''
 def get_weather_data():
     api_date, api_time = get_api_date()
     url = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData?"
@@ -293,7 +295,7 @@ def get_weather_data():
     #render(request,'vote/index.html',passing_data)
     
 
-
+'''
 
 
 

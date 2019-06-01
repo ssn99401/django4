@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
-
+#from django.contrib.auth.models import User
+from customlogin.models import User
 # 카테고리
 # 카테고리명
 class Category(models.Model):

@@ -65,6 +65,7 @@ setting.py는 웹서버 실행에 필요한 변수값을 읽는 단계이므로,
     )
 '''
 # Application definition
+AUTH_USER_MODEL='customlogin.user'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -81,6 +82,7 @@ INSTALLED_APPS = [
     #'social_django'
     'blog',
     'cal.apps.CalConfig',
+
 ]
 
 MIDDLEWARE = [

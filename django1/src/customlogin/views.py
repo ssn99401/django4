@@ -1,6 +1,7 @@
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from customlogin.models import User
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls.base import reverse
@@ -35,13 +36,11 @@ def signup(request):
                 User 모델클래스에  있는 회원 생성 함수를 사용해 새로운 회원을 데이터베이스에 만들수 있음
                 User.objects.create_user(아이디, 비밀번호, 이메일) : 매개변수에 들어온 입력을 바탕으로 새로운 회원을 생성하느 함수'''
                 new_user = User.objects.create_user(username=form.cleaned_data['username'],
-                                                    email=form.cleaned_data['email'],
                                                     password=form.cleaned_data['password'])
                 print('회원 가입 완료 : ',new_user)
                 new_user.first_name = form.cleaned_data['first_name']
-                new_user.last_name = form.cleaned_data['last_name']
                 new_user.save()
-
+            
                 #다른 페이지나 HTML파일 전송
                 return render(request,'cl/signupcom.html',{'name': new_user.username})
             else: #입력한 비밀번호가 틀린경우 처리

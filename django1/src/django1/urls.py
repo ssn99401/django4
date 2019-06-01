@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include ###include중요
 from vote.views import main
-
 #기본 도메인이 웹서버가 실행되는 환경에 맞춰짐
 #개발 과정에서의 기본 도메인 주소 : 127.0.0.1:8000/
 '''

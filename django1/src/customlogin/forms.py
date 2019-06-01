@@ -5,7 +5,8 @@ Created on 2019. 4. 28.
 '''
 #django에서 기본적으로 제공하는 회원관리 어플리케이션
 #그 어플리케이션에 있는 models.py에 접근해 User(회원)클래스 임포트
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from customlogin.models import User
 from django import forms
 #회원가입에 사용할 폼
 #아이디,비번,비밀번호 확인, 이름 ,성 ,이메일 정보
@@ -25,10 +26,10 @@ class SignupForm(forms.models.ModelForm):
     password_check = forms.CharField(widget=forms.PasswordInput(), label="비밀번호 확인", max_length=128)
     
     #field_order : 입력양식의 순서를 저장하는 변수, 리스트타입으로 변수명을 문자열로 저장
-    field_order = ['username', 'password','password_check','last_name','first_name','email']
+    field_order = ['username', 'password','password_check','first_name']
     class Meta:
         model = User
-        fields = ['username', 'password', 'last_name','first_name','email']
+        fields = ['username', 'password', 'first_name']
         #widgets : 모델클래스의 변수에 위젯을 적용할 때 사용하는 변수(사전형)
         #키 부분에 변수이름을 문자열로, 값 부분에 위젯 객체를 저장
         widgets = {'password' : forms.PasswordInput()}
