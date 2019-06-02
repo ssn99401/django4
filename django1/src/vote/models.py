@@ -1,5 +1,5 @@
 from django.db import models
-
+from customlogin.models import User
 #Question 모델클래스
 #설문 제목, 설문 생성일
 class Question(models.Model):
@@ -7,10 +7,13 @@ class Question(models.Model):
     #models.DateField : 날짜 데이터를 저장할 수 있는 저장공간
     #models.DateTimeField : 날짜+시간 데이터를 저장할 수 있는 공간
     pub_date = models.DateField()
+    attendance = models.IntegerField(default=0)
+    absence = models.IntegerField(default=0)
     
     def __str__(self):
         return self.name
-    
+ 
+'''   
 #Choice 모델클래스
 #답변 항목 내용, 투표 수, 어떤 Question과 연결되있는지?(외래키)
 class Choice(models.Model):
@@ -25,6 +28,8 @@ class Choice(models.Model):
     def __str__(self):
         #self.q.name : 현재 Choice객체가 연결한 Question객체의 name변수값 접근
         return self.q.name + '/' + self.name
+'''
+
 '''
 models.ForeignKey : 다른 모델클래스의 객체와 해당 모델클래스의 객체가 연결 관계를 가지는
 저장 공간

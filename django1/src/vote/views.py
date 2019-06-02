@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from vote.models import Question, Choice
+from vote.models import Question
+from customlogin.models import User
 from django.contrib.auth.decorators import login_required
 '''decorator : 뷰함수가 실행되기 전에 먼저 실행되는 함수
 login_required : 뷰함수가 실행되기전 웹클라이언트의 로그인 여부를 파악하고 
@@ -37,7 +38,7 @@ def index(request):
     target_time = parsed_json[0]['fcstTime']
 
     date_calibrate = target_date  # date of TMX, TMN
-    if target_time > 1300:
+    if int(target_time) > 1300:
         date_calibrate = str(int(target_date) + 1)
 
     passing_data = {}
@@ -67,11 +68,11 @@ def detail(request,q_id):
     Question 객체들은 자신과 연결된 Choice 객체들을 추출할 수 있음.
     Question객체.choice_set.all(또는 get,filter,exclude)로 데이터베이스에 저장된
     Choice 객체 추출 가능. 모델클래스 이름을 소문자로 작성해야함
-    '''
+    
     #Question 객체로 연결된 Choice 객체들을 모두 추출
-    c_list = q.choice_set.all()
+    c_list = q.choice_set.all()'''
     #HTML 파일 전달 
-    return render(request,'vote/detail.html',{'q':q, 'c_list':c_list})
+    return render(request,'vote/detail.html',{'q':q})
 
 from django.http.response import HttpResponseRedirect
 '''
@@ -97,7 +98,7 @@ def vote(request):
         request.POST 또는 request.GET : 웹클라이언트의 요청과 함께 날라온 데이터를
         저장하는 변수
         값을 꺼낼때, HTML 코드에 name 속성 이름으로 값을 추출할 수 있음
-        '''
+        
         print(request.POST)
         #사용자가 투표한 Choice객체의 id값을 추출
         c_id = request.POST.get('vote')
@@ -110,7 +111,17 @@ def vote(request):
         #다른 뷰함수의 URL을 웹클라이언트에게 전달
         #c.q : Choice객체가 연결한 Question객체 변수
         #c.q.id : 연결한 Question객체의 id변수값
-        url = '/vote/result/%s/' % c.q.id
+        url = '/vote/result/%s/' % c.q.id'''
+        a = request.POST.get('vote')
+        c_id = a[1:]
+        c = get_object_or_404(Question, id=c_id)
+        if(a[0] == '1'):
+            c.attendance = c.attendance + 1
+        else:
+            c.absence = c.absence + 1
+        c.save()
+        
+        url = '/vote/result/%s/' %c.id
         return HttpResponseRedirect( url )
 #결과 페이지
 def result(request, q_id):
@@ -119,8 +130,10 @@ def result(request, q_id):
     #HTML 전달
     return render(request, 'vote/result.html',{'q': q })
 #모델 폼 클래스 임포트
-from vote.forms import QuestionForm, ChoiceForm
-from datetime import datetime
+from vote.forms import QuestionForm
+from _datetime import datetime
+
+
 #Question 객체 추가
 @login_required
 def qregiste(request):
@@ -155,13 +168,16 @@ def qregiste(request):
         #데이터베이스에 저장되지 않은 변수의 id값은 None이 뜬다
         print('저장 전 : ', q.id) 
         #값이 채워져 있지 않은 변수에 값을 채움
-        q.pub_date = datetime.now() #컴퓨터의 현재시간/날짜 대입
+        #q.pub_date = datetime.now() #컴퓨터의 현재시간/날짜 대입
+        q.attendance = 0
+        q.absence = 0
         #데이터배이스에 새로만든 모델객체 저장
         #모델객체.save() : 새로운 객체를 저장하거나 기존객체의 변수값변경을 데이터베이스에 저장할 수 있음
         q.save()
         print('저장 후: ', q.id)
         #다른 URL로 이동
-        return HttpResponseRedirect('/vote/%s/' % q.id)
+        return HttpResponseRedirect('/vote')
+        #return HttpResponseRedirect('/vote/%s/' % q.id)
          
 #Question 객체 수정
 @login_required
@@ -194,7 +210,7 @@ def qdelete(request, q_id):
     q.delete() #데이터베이스에서 삭제됨
     print('삭제후 id : ',q.id)
     return render(request,'vote/delete_com.html',{'title':q.name,'type': 1})
-
+'''
 #Choice 객체 추가
 @login_required
 def cregiste(request):
@@ -234,7 +250,7 @@ def cdelete(request, c_id):
     print(c.id)
     #HTML 파일 or URL 주소 전달
     return render(request,'vote/delete_com.html',{'title': c.name,'type': 2})
-    
+ '''   
 import datetime
 import pytz
 import urllib.request

@@ -10,7 +10,7 @@ Model 클래스에 변동 사항을 자동으로 Form클래스가 인지해서 �
 디자이너가 직접 입력양식을 만들지 않아도됨
 '''
 from django.forms.models import ModelForm
-from vote.models import Question, Choice
+from vote.models import Question
 
 #Question 모델클래스와 연동된 모델폼클래스 정의
 #클라이언트가 Question 객체를 추가/수정할 때 사용 
@@ -25,9 +25,9 @@ class QuestionForm(ModelForm):
         #exclude : 모델클래스에 정의된 변수 중 어떤 변수를 제외하고 클라이언트에게 제공될 것인지 지정
         #변수이름은 무자열 형태로, 저장하는 타입은 리스트 형태로
         #fields나 exclude 변수중 한개만 사용
-        fields = ['name']
+        fields = ['name','pub_date']
         #exclude = ['pub_date'] -> 제외하고 다른 것들 
-
+'''
 #Choice 모델클래스와 연동된 모델폼클래스 정의
 #클라이언트가 Choice 객체를 추가/수정할 때 사용
 class ChoiceForm(ModelForm):
@@ -37,7 +37,7 @@ class ChoiceForm(ModelForm):
         #exclude = ['votes']
 
 
-
+'''
 
 
 

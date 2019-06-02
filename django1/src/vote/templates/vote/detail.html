@@ -6,11 +6,10 @@
 
 <form action="/vote/vote/" method="post">
 	{% csrf_token %}
-	{% for c in c_list %}
-		<input type="radio" name="vote" value="{{c.id}}">
-		<label>{{ c.name }} <a href="{% url 'vote:cu' c.id %}">수정</a><a href="/vote/{{c.id}}/deletec/">삭제</a></label>
+		<input type="radio" name="vote" value="1{{q.id}}">출석
+		<input type="radio" name="vote" value="2{{q.id}}">결석
 		<br>
-	{% endfor %}
+
 	<input type="submit" value="투표">
 </form> 
 {% endblock %}

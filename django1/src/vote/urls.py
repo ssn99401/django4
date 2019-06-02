@@ -30,11 +30,11 @@ urlpatterns=[
     path('qr/', qregiste, name="qr"),
     #127.0.0.1:8000/vote/cr/ -> cregiste함수 호출
     #파이썬 코드나 HTML에서 vote:cr 별칭으로 URL을 찾을 수 있음
-    path('cr/', cregiste, name="cr"),
+    #path('cr/', cregiste, name="cr"),
     path('<int:q_id>/change/', qupdate, name="qu"),
     path('<int:q_id>/delete/',qdelete,name="qd"),
-    path('<int:c_id>/deletec/',cdelete,name="cd"),
-    path('<int:c_id>/changec/',cupdate,name="cu")
+    #path('<int:c_id>/deletec/',cdelete,name="cd"),
+    #path('<int:c_id>/changec/',cupdate,name="cu")
     ]
 
 
